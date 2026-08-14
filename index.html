@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>홍보는, 관계 맺기 — 사회복지 홍보 노하우 블로그</title>
+<meta name="description" content="사회복지 현장의 홍보 실무 팁과 노하우를 기록하는 공간" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<style>
+  /* 타이틀 전용 폰트: Gmarket Sans Bold (굵은 그로테스크 고딕) */
+  @font-face {
+    font-family: 'GmarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+
+<style>
+  :root{
+    --bg: #FAF2E6;
+    --bg-soft: #F3E8D8;
+    --card: #FFFDF9;
+    --ink: #3B2E27;
+    --ink-soft: #7A6A5D;
+    --salmon: #E2795A;
+    --salmon-deep: #C15B3C;
+    --salmon-pale: #F4D9CB;
+    --line: #E6D5C0;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 120px;
+  }
+
+  /* ---------- 헤더 / 히어로 ---------- */
+
+  header.hero {
+    padding: 64px 0 40px;
+    border-bottom: none;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--salmon-deep);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--salmon);
+    display: inline-block;
+  }
+
+  h1.title {
+    font-family: 'GmarketSans', 'Pretendard Variable', sans-serif;
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.35;
+    margin: 0 0 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h1.title em {
+    font-style: normal;
+    color: var(--salmon-deep);
+    position: relative;
+  }
+
+  p.lede {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  /* ---------- 연결선 (시그니처 요소) ---------- */
+
+  .connector {
+    position: relative;
+    height: 56px;
+    margin: 8px 0 36px;
+  }
+
+  .connector svg { width: 100%; height: 100%; display: block; }
+
+  .connector-label {
+    position: absolute;
+    right: 0;
+    top: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- 필터 / 검색 ---------- */
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 36px;
+  }
+
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all .15s ease;
+    white-space: nowrap;
+  }
+
+  .chip:hover { border-color: var(--salmon); color: var(--salmon-deep); }
+
+  .chip.active {
+    background: var(--salmon);
+    border-color: var(--salmon);
+    color: #fff;
+  }
+
+  .search-box {
+    margin-left: auto;
+    position: relative;
+  }
+
+  .search-box input {
+    font-family: inherit;
+    font-size: 13.5px;
+    padding: 8px 14px 8px 30px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    width: 160px;
+    transition: width .2s ease, border-color .2s ease;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--salmon);
+    width: 210px;
+  }
+
+  .search-box::before {
+    content: '⌕';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  /* ---------- 글 목록 ---------- */
+
+  .post-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .post-card {
+    display: block;
+    padding: 22px 20px;
+    background: transparent;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    cursor: pointer;
+  }
+
+  .post-card:hover {
+    background: var(--card);
+    border-color: var(--line);
+    transform: translateX(2px);
+  }
+
+  .post-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .post-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--salmon-deep);
+    background: var(--salmon-pale);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .post-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+  }
+
+  h2.post-title {
+    font-family: 'GmarketSans', 'Pretendard Variable', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    line-height: 1.4;
+  }
+
+  p.post-excerpt {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+  }
+
+  /* ---------- 글 상세 페이지 ---------- */
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--salmon-deep);
+    margin: 40px 0 30px;
+    cursor: pointer;
+  }
+
+  .back-link:hover { text-decoration: underline; }
+
+  article.post-detail h1 {
+    font-family: 'GmarketSans', 'Pretendard Variable', sans-serif;
+    font-size: 32px;
+    line-height: 1.4;
+    margin: 0 0 14px;
+  }
+
+  article.post-detail .post-meta-row { margin-bottom: 32px; }
+
+  article.post-detail .post-body {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+
+  article.post-detail .post-body h3 {
+    font-family: 'GmarketSans', 'Pretendard Variable', sans-serif;
+    font-size: 20px;
+    margin: 32px 0 12px;
+    color: var(--salmon-deep);
+  }
+
+  article.post-detail .post-body p { margin: 0 0 18px; }
+
+  article.post-detail .post-body ul { margin: 0 0 18px; padding-left: 20px; }
+  article.post-detail .post-body li { margin-bottom: 6px; }
+
+  article.post-detail .post-body blockquote {
+    margin: 24px 0;
+    padding: 4px 20px;
+    border-left: 3px solid var(--salmon);
+    color: var(--ink-soft);
+    font-style: normal;
+  }
+
+  article.post-detail .post-body img {
+    max-width: 100%;
+    border-radius: var(--radius);
+    margin: 16px 0;
+  }
+
+  article.post-detail .post-body a {
+    color: var(--salmon-deep);
+    border-bottom: 1px solid var(--salmon-pale);
+  }
+
+  footer.site-footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 0 18px 100px; }
+    header.hero { padding: 44px 0 28px; }
+    h1.title { font-size: 30px; }
+    article.post-detail h1 { font-size: 26px; }
+    .search-box input { width: 120px; }
+    .search-box input:focus { width: 150px; }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--salmon-deep);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">사회복지 홍보 노하우 아카이브</div>
+    <h1 class="title">홍보는, 결국<br /><em>관계 맺기</em>입니다.</h1>
+    <p class="lede">복지관에서 홍보를 맡으며 쌓은 기록들입니다. 뉴스레터부터 SNS, 위기관리까지 — 같은 자리에 있는 분들과 나누고 싶어 이 공간을 엽니다.</p>
+  </header>
+
+  <div class="connector">
+    <svg viewBox="0 0 712 56" preserveAspectRatio="none">
+      <line x1="0" y1="28" x2="712" y2="28" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="1 8" stroke-linecap="round" />
+      <circle cx="8" cy="28" r="4" fill="var(--salmon)" />
+      <circle cx="704" cy="28" r="4" fill="var(--salmon)" fill-opacity="0.4" />
+    </svg>
+    <span class="connector-label" id="post-count-label"></span>
+  </div>
+
+  <main id="main-content"></main>
+
+  <footer class="site-footer">
+    <span>WRITTEN BY 콩미</span>
+    <span id="footer-count"></span>
+  </footer>
+
+</div>
+
+<script src="posts.js"></script>
+<script>
+(function () {
+  const main = document.getElementById('main-content');
+  const postCountLabel = document.getElementById('post-count-label');
+  const footerCount = document.getElementById('footer-count');
+
+  let activeCategory = 'all';
+  let searchTerm = '';
+
+  function formatDate(str) {
+    const d = new Date(str);
+    if (isNaN(d)) return str;
+    return d.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function categoryName(id) {
+    const c = CATEGORIES.find(c => c.id === id);
+    return c ? c.name : id;
+  }
+
+  function getFilteredPosts() {
+    return POSTS
+      .filter(p => activeCategory === 'all' || p.category === activeCategory)
+      .filter(p => {
+        if (!searchTerm) return true;
+        const t = searchTerm.toLowerCase();
+        return p.title.toLowerCase().includes(t) || p.excerpt.toLowerCase().includes(t);
+      })
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  function renderList() {
+    const filtered = getFilteredPosts();
+    postCountLabel.textContent = `전체 ${POSTS.length}편`;
+    footerCount.textContent = `${POSTS.length} POSTS`;
+
+    const chipsHtml = `
+      <div class="controls">
+        <div class="chip ${activeCategory === 'all' ? 'active' : ''}" data-cat="all">전체</div>
+        ${CATEGORIES.map(c => `<div class="chip ${activeCategory === c.id ? 'active' : ''}" data-cat="${c.id}">${c.name}</div>`).join('')}
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="검색" value="${searchTerm.replace(/"/g, '&quot;')}" />
+        </div>
+      </div>
+    `;
+
+    const listHtml = filtered.length
+      ? `<div class="post-list">
+          ${filtered.map(p => `
+            <a class="post-card" href="#/post/${p.id}">
+              <div class="post-meta-row">
+                <span class="post-tag">${categoryName(p.category)}</span>
+                <span class="post-date">${formatDate(p.date)}</span>
+              </div>
+              <h2 class="post-title">${p.title}</h2>
+              <p class="post-excerpt">${p.excerpt}</p>
+            </a>
+          `).join('')}
+        </div>`
+      : `<div class="empty-state">해당하는 글이 없습니다.</div>`;
+
+    main.innerHTML = chipsHtml + listHtml;
+
+    document.querySelectorAll('.chip').forEach(el => {
+      el.addEventListener('click', () => {
+        activeCategory = el.dataset.cat;
+        renderList();
+      });
+    });
+
+    const input = document.getElementById('search-input');
+    input.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      renderList();
+    });
+    input.focus({ preventScroll: true });
+    input.setSelectionRange(searchTerm.length, searchTerm.length);
+  }
+
+  function renderDetail(id) {
+    const post = POSTS.find(p => p.id === id);
+    if (!post) {
+      main.innerHTML = `<div class="empty-state">글을 찾을 수 없습니다.</div><a class="back-link" href="#/">← 목록으로</a>`;
+      return;
+    }
+    postCountLabel.textContent = categoryName(post.category);
+    footerCount.textContent = `${POSTS.length} POSTS`;
+
+    main.innerHTML = `
+      <article class="post-detail">
+        <div class="post-meta-row">
+          <span class="post-tag">${categoryName(post.category)}</span>
+          <span class="post-date">${formatDate(post.date)}</span>
+        </div>
+        <h1>${post.title}</h1>
+        <div class="post-body">${post.content}</div>
+      </article>
+      <a class="back-link" href="#/">← 목록으로</a>
+    `;
+  }
+
+  function route() {
+    const hash = window.location.hash;
+    const match = hash.match(/^#\/post\/(.+)$/);
+    if (match) {
+      renderDetail(decodeURIComponent(match[1]));
+    } else {
+      renderList();
+    }
+    window.scrollTo({ top: 0 });
+  }
+
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+
+</body>
+</html>
