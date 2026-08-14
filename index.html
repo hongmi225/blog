@@ -324,7 +324,17 @@
     font-size: 11.5px;
     color: var(--ink-soft);
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  footer.site-footer .footer-row {
+    display: flex;
     justify-content: space-between;
+  }
+
+  footer.site-footer .footer-contact {
+    color: var(--ink-soft);
   }
 
   @media (max-width: 600px) {
@@ -368,8 +378,11 @@
   <main id="main-content"></main>
 
   <footer class="site-footer">
-    <span>WRITTEN BY 콩미</span>
-    <span id="footer-count"></span>
+    <div class="footer-row">
+      <span>WRITTEN BY 콩미</span>
+      <span id="footer-count"></span>
+    </div>
+    <div class="footer-contact">부산뇌병변복지관 홍보담당 사회복지사 조홍미 · 070-4612-9705</div>
   </footer>
 
 </div>
