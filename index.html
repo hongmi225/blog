@@ -385,6 +385,17 @@
   let activeCategory = 'all';
   let searchTerm = '';
 
+  // 본문 링크는 항상 새 창에서 열리도록 marked 렌더러를 커스터마이즈
+  const renderer = new marked.Renderer();
+  renderer.link = function (href, title, text) {
+    const hrefStr = (href && href.href) ? href.href : href;
+    const titleStr = (href && href.title) ? href.title : title;
+    const textStr = (href && href.text) ? href.text : text;
+    const titleAttr = titleStr ? ` title="${titleStr}"` : '';
+    return `<a href="${hrefStr}"${titleAttr} target="_blank" rel="noopener noreferrer">${textStr}</a>`;
+  };
+  marked.setOptions({ renderer });
+
   function formatDate(str) {
     const d = new Date(str);
     if (isNaN(d)) return str;
