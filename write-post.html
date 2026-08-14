@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>글쓰기 도구 — 사회복지 홍보 노하우 아카이브</title>
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --card: #FAFAFA;
+    --ink: #111111;
+    --ink-soft: #5C5C5C;
+    --accent: #FFE45C;
+    --accent-ink: #6B5B00;
+    --line: #E5E3D8;
+    --danger: #B3261E;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 24px 100px; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  p.desc { color: var(--ink-soft); font-size: 14px; line-height: 1.6; margin: 0 0 32px; }
+
+  .field { margin-bottom: 20px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .field .hint { font-size: 12px; color: var(--ink-soft); margin-top: 4px; }
+
+  input[type="text"], input[type="date"], select, textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+  }
+
+  .row { display: flex; gap: 12px; }
+  .row .field { flex: 1; }
+
+  .toolbar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+
+  .toolbar button {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .toolbar button:hover { border-color: var(--ink); }
+
+  textarea#content { min-height: 220px; resize: vertical; line-height: 1.6; }
+
+  .generate-btn {
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--accent);
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  .generate-btn:hover { opacity: 0.9; }
+
+  .error-msg {
+    font-size: 13px;
+    color: var(--danger);
+    margin-top: 8px;
+    display: none;
+  }
+
+  .output-section { margin-top: 36px; display: none; }
+
+  .output-section h2 {
+    font-size: 15px;
+    margin: 0 0 4px;
+  }
+
+  .output-section p.desc2 {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+
+  pre#output {
+    background: #1B1B18;
+    color: #F2EFE3;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    padding: 18px;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .copy-btn {
+    margin-top: 10px;
+    font-size: 13px;
+    padding: 8px 16px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .copy-btn.copied { background: var(--accent); border-color: var(--accent); }
+
+  .steps {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="eyebrow">글쓰기 도구</div>
+  <h1>새 글 만들기</h1>
+  <p class="desc">양식을 채우고 [코드 생성]을 누르면 posts.js에 그대로 붙여넣을 코드가 만들어집니다. 직접 따옴표·콤마·태그를 손으로 칠 필요가 없어요.</p>
+
+  <div class="field">
+    <label for="title">제목</label>
+    <input type="text" id="title" placeholder="예: 뉴스레터 오픈율 높이는 제목 짓는 법" />
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="category">카테고리</label>
+      <select id="category"></select>
+    </div>
+    <div class="field">
+      <label for="date">날짜</label>
+      <input type="date" id="date" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="id">고유 id</label>
+    <input type="text" id="id" placeholder="예: newsletter-tip-02" />
+    <div class="hint">영문·숫자·하이픈만, 기존 글과 겹치지 않게. 제목을 쓰면 자동으로 채워지고, 직접 고쳐도 됩니다.</div>
+  </div>
+
+  <div class="field">
+    <label for="excerpt">요약 (목록에 보일 한 줄)</label>
+    <input type="text" id="excerpt" placeholder="예: 첫 문장에서 승부가 납니다." />
+  </div>
+
+  <div class="field">
+    <label for="content">본문 (마크다운)</label>
+    <div class="toolbar">
+      <button type="button" data-action="bold">굵게</button>
+      <button type="button" data-action="h2">소제목</button>
+      <button type="button" data-action="list">목록</button>
+      <button type="button" data-action="quote">인용</button>
+      <button type="button" data-action="link">링크</button>
+      <button type="button" data-action="image">이미지</button>
+    </div>
+    <textarea id="content" placeholder="본문을 씁니다. 버튼을 누르면 커서 위치에 문법이 삽입돼요."></textarea>
+    <div class="hint">**굵게**, ## 소제목, - 목록, > 인용, [링크글자](주소), ![설명](이미지주소)</div>
+  </div>
+
+  <button class="generate-btn" id="generate-btn">코드 생성</button>
+  <div class="error-msg" id="error-msg"></div>
+
+  <div class="output-section" id="output-section">
+    <h2>이 코드를 posts.js의 POSTS 배열 맨 위에 붙여넣으세요</h2>
+    <p class="desc2">기존 첫 번째 글({ ... }, ) 바로 위에 통째로 붙여넣으면 됩니다.</p>
+    <pre id="output"></pre>
+    <button class="copy-btn" id="copy-btn">코드 복사</button>
+
+    <div class="steps">
+      1. 위 코드 복사<br />
+      2. GitHub에서 posts.js 열기 → 연필(✏️) 아이콘<br />
+      3. POSTS = [ 바로 다음 줄에 붙여넣기<br />
+      4. 저장(Commit changes)<br />
+      5. 사이트 새로고침하면 반영됩니다
+    </div>
+  </div>
+
+</div>
+
+<script src="posts.js"></script>
+<script>
+(function () {
+  const categorySelect = document.getElementById('category');
+  const titleInput = document.getElementById('title');
+  const idInput = document.getElementById('id');
+  const dateInput = document.getElementById('date');
+  const excerptInput = document.getElementById('excerpt');
+  const contentTextarea = document.getElementById('content');
+  const generateBtn = document.getElementById('generate-btn');
+  const errorMsg = document.getElementById('error-msg');
+  const outputSection = document.getElementById('output-section');
+  const outputPre = document.getElementById('output');
+  const copyBtn = document.getElementById('copy-btn');
+
+  // 카테고리 옵션은 posts.js의 CATEGORIES를 그대로 사용 (항상 최신 상태 유지)
+  CATEGORIES.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.name;
+    categorySelect.appendChild(opt);
+  });
+
+  dateInput.value = new Date().toISOString().slice(0, 10);
+
+  let idManuallyEdited = false;
+  idInput.addEventListener('input', () => { idManuallyEdited = true; });
+
+  titleInput.addEventListener('input', () => {
+    if (idManuallyEdited) return;
+    const slug = titleInput.value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9가-힣\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .slice(0, 40);
+    idInput.value = slug || '';
+  });
+
+  const toolbarActions = {
+    bold: { before: '**', after: '**', placeholder: '굵게 표시할 텍스트' },
+    h2: { before: '## ', after: '', placeholder: '소제목', lineStart: true },
+    list: { before: '- ', after: '', placeholder: '목록 항목', lineStart: true },
+    quote: { before: '> ', after: '', placeholder: '인용 문장', lineStart: true },
+    link: { before: '[', after: '](주소)', placeholder: '링크 글자' },
+    image: { before: '![', after: '](이미지주소)', placeholder: '이미지 설명' },
+  };
+
+  document.querySelectorAll('.toolbar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = toolbarActions[btn.dataset.action];
+      const ta = contentTextarea;
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const selected = ta.value.slice(start, end) || action.placeholder;
+      const before = ta.value.slice(0, start);
+      const after = ta.value.slice(end);
+
+      let insertBefore = action.before;
+      if (action.lineStart && start > 0 && before.slice(-1) !== '\n') {
+        insertBefore = '\n' + insertBefore;
+      }
+
+      const newText = insertBefore + selected + action.after;
+      ta.value = before + newText + after;
+      ta.focus();
+      const cursorPos = before.length + insertBefore.length;
+      ta.setSelectionRange(cursorPos, cursorPos + selected.length);
+    });
+  });
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.style.display = 'block';
+    outputSection.style.display = 'none';
+  }
+
+  function clearError() {
+    errorMsg.style.display = 'none';
+  }
+
+  generateBtn.addEventListener('click', () => {
+    const title = titleInput.value.trim();
+    const id = idInput.value.trim();
+    const category = categorySelect.value;
+    const date = dateInput.value;
+    const excerpt = excerptInput.value.trim();
+    const content = contentTextarea.value.trim();
+
+    if (!title) { showError('제목을 입력하세요.'); titleInput.focus(); return; }
+    if (!id) { showError('고유 id를 입력하세요.'); idInput.focus(); return; }
+    if (!/^[a-z0-9가-힣-]+$/i.test(id)) { showError('id는 영문·숫자·하이픈만 사용할 수 있어요.'); idInput.focus(); return; }
+    if (!date) { showError('날짜를 선택하세요.'); dateInput.focus(); return; }
+    if (!content) { showError('본문을 입력하세요.'); contentTextarea.focus(); return; }
+
+    const existing = (typeof POSTS !== 'undefined') ? POSTS.find(p => p.id === id) : null;
+    if (existing) { showError('이미 같은 id의 글이 있어요. 다른 id를 써주세요.'); idInput.focus(); return; }
+
+    clearError();
+
+    const code =
+`  {
+    id: ${JSON.stringify(id)},
+    title: ${JSON.stringify(title)},
+    category: ${JSON.stringify(category)},
+    date: ${JSON.stringify(date)},
+    excerpt: ${JSON.stringify(excerpt)},
+    content: ${JSON.stringify(content)}
+  },`;
+
+    outputPre.textContent = code;
+    outputSection.style.display = 'block';
+    copyBtn.classList.remove('copied');
+    copyBtn.textContent = '코드 복사';
+    outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(outputPre.textContent);
+      copyBtn.classList.add('copied');
+      copyBtn.textContent = '복사됨 ✓';
+    } catch (err) {
+      showError('복사에 실패했어요. 코드를 직접 드래그해서 복사해주세요.');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
