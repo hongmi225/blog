@@ -23,15 +23,15 @@
 
 <style>
   :root{
-    --bg: #F4F2E9;
-    --bg-soft: #EAE7D9;
+    --bg: #F2F0E4;
+    --bg-soft: #E6E1CC;
     --card: #FFFEFA;
-    --ink: #33392C;
-    --ink-soft: #6B7260;
-    --salmon: #7C9464;
-    --salmon-deep: #55643F;
-    --salmon-pale: #DCE5D2;
-    --line: #DBD8C7;
+    --ink: #1C1F16;
+    --ink-soft: #5C6352;
+    --salmon: #4A6B35;
+    --salmon-deep: #2E4322;
+    --salmon-pale: #B9CBA3;
+    --line: #CDC7AC;
     --radius: 14px;
   }
 
@@ -407,12 +407,8 @@
       .sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
-  function renderList() {
-    const filtered = getFilteredPosts();
-    postCountLabel.textContent = `전체 ${POSTS.length}편`;
-    footerCount.textContent = `${POSTS.length} POSTS`;
-
-    const chipsHtml = `
+  function renderControlsShell() {
+    main.innerHTML = `
       <div class="controls">
         <div class="chip ${activeCategory === 'all' ? 'active' : ''}" data-cat="all">전체</div>
         ${CATEGORIES.map(c => `<div class="chip ${activeCategory === c.id ? 'active' : ''}" data-cat="${c.id}">${c.name}</div>`).join('')}
@@ -420,7 +416,30 @@
           <input type="text" id="search-input" placeholder="검색" value="${searchTerm.replace(/"/g, '&quot;')}" />
         </div>
       </div>
+      <div id="list-container"></div>
     `;
+
+    document.querySelectorAll('.chip').forEach(el => {
+      el.addEventListener('click', () => {
+        activeCategory = el.dataset.cat;
+        document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.cat === activeCategory));
+        renderPostList();
+      });
+    });
+
+    // 한글 등 IME 조합 중에는 이 input 엘리먼트 자체가 재생성되면 안 되므로
+    // 목록(list-container)만 갱신하고 검색창은 그대로 둔다.
+    const input = document.getElementById('search-input');
+    input.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      renderPostList();
+    });
+  }
+
+  function renderPostList() {
+    const filtered = getFilteredPosts();
+    postCountLabel.textContent = `전체 ${POSTS.length}편`;
+    footerCount.textContent = `${POSTS.length} POSTS`;
 
     const listHtml = filtered.length
       ? `<div class="post-list">
@@ -437,22 +456,12 @@
         </div>`
       : `<div class="empty-state">해당하는 글이 없습니다.</div>`;
 
-    main.innerHTML = chipsHtml + listHtml;
+    document.getElementById('list-container').innerHTML = listHtml;
+  }
 
-    document.querySelectorAll('.chip').forEach(el => {
-      el.addEventListener('click', () => {
-        activeCategory = el.dataset.cat;
-        renderList();
-      });
-    });
-
-    const input = document.getElementById('search-input');
-    input.addEventListener('input', (e) => {
-      searchTerm = e.target.value;
-      renderList();
-    });
-    input.focus({ preventScroll: true });
-    input.setSelectionRange(searchTerm.length, searchTerm.length);
+  function renderList() {
+    renderControlsShell();
+    renderPostList();
   }
 
   function renderDetail(id) {
