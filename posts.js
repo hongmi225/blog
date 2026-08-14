@@ -28,12 +28,12 @@ const CATEGORIES = [
 ];
 
 const POSTS = [
-  {
-    id: "example-post",
-    title: "(예시) 이 글은 삭제해도 됩니다 — 글쓰기 형식 참고용",
-    category: "etc",
+    {
+    id: "글쓰기도구",
+    title: "글쓰기도구",
+    category: "sns",
     date: "2026-08-14",
-    excerpt: "새 글을 쓸 때 이 객체를 복사해서 쓰거나, write-post.html 도구로 자동 생성하세요.",
-    content: "이 글은 **글 작성 형식을 보여주는 예시**입니다. content 안에는 마크다운 문법을 그대로 쓰면 됩니다.\n\n## 소제목은 이렇게\n\n- 목록 항목 1\n- 목록 항목 2\n\n> 인용이나 강조하고 싶은 문장은 이렇게 넣을 수 있어요.\n\n이미지는 ![설명](이미지주소) 형태로, 링크는 [링크 글자](주소) 형태로 넣을 수 있습니다."
+    excerpt: "",
+    content: "**ddd**\n## 소제목\n- 목록 항목1\n- 목록 항목2\n\n[네이버](https://www.naver.com/)"
   },
 ];
