@@ -546,7 +546,7 @@
   <footer class="site-footer">
     <div class="footer-row">
       <span>WRITTEN BY 콩미</span>
-      <span id="footer-count"></span>
+      <span><span id="footer-count"></span> · <span id="visit-stats">오늘 – · 누적 –</span></span>
     </div>
     <div class="footer-contact">부산뇌병변복지관 홍보담당 사회복지사 조홍미 · 070-4612-9705</div>
   </footer>
@@ -859,8 +859,44 @@
     window.scrollTo({ top: 0 });
   }
 
+  async function trackAndShowVisits() {
+    const el = document.getElementById('visit-stats');
+    if (!el) return;
+
+    // 한국 시간 기준 날짜 (예: 2026-08-14)
+    const todayKey = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
+    const sessionFlag = 'visit_counted';
+    const alreadyCounted = sessionStorage.getItem(sessionFlag) === '1';
+
+    const totalRef = db.collection('siteStats').doc('total');
+    const todayRef = db.collection('siteStats').doc(todayKey);
+
+    try {
+      if (!alreadyCounted) {
+        await db.runTransaction(async (t) => {
+          const totalDoc = await t.get(totalRef);
+          const todayDoc = await t.get(todayRef);
+          const totalCount = totalDoc.exists ? (totalDoc.data().count || 0) : 0;
+          const todayCount = todayDoc.exists ? (todayDoc.data().count || 0) : 0;
+          t.set(totalRef, { count: totalCount + 1 }, { merge: true });
+          t.set(todayRef, { count: todayCount + 1 }, { merge: true });
+        });
+        sessionStorage.setItem(sessionFlag, '1');
+      }
+
+      const [totalSnap, todaySnap] = await Promise.all([totalRef.get(), todayRef.get()]);
+      const totalCount = totalSnap.exists ? (totalSnap.data().count || 0) : 0;
+      const todayCount = todaySnap.exists ? (todaySnap.data().count || 0) : 0;
+      el.textContent = `오늘 ${todayCount} · 누적 ${totalCount}`;
+    } catch (e) {
+      el.textContent = '오늘 – · 누적 –';
+      console.error(e);
+    }
+  }
+
   window.addEventListener('hashchange', route);
   route();
+  trackAndShowVisits();
 })();
 </script>
 

@@ -9,9 +9,9 @@
   괜찮은 값입니다. 실제 보안은 Firebase 콘솔의 Firestore 보안 규칙에서
   걸어줍니다 (아래 안내 참고). 그래도 프로젝트 자체는 본인 것만 쓰세요.
 
-  📌 Firestore 규칙에 likes, comments 외에 views 컬렉션도 추가해야
-  조회수가 정상 작동합니다:
-    match /views/{postId} {
+  📌 Firestore 규칙에 likes, comments, views 외에 siteStats 컬렉션도
+  추가해야 방문자 수(오늘/누적)가 정상 작동합니다:
+    match /siteStats/{docId} {
       allow read: if true;
       allow write: if request.resource.data.count is int
                    && request.resource.data.count >= 0;
